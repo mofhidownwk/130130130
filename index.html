@@ -1,0 +1,773 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人生重大決策委員會</title>
+
+<style>
+/* ===== 主要設定 ===== */
+:root {
+    --bg: #17191f;
+    --panel: #242730;
+    --gold: #d6b46a;
+    --gold-light: #f2d99b;
+    --red: #a83b40;
+    --text: #eee9dc;
+    --muted: #aaa69c;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 30px 16px 60px;
+    background:
+        radial-gradient(ellipse at top, #35313a 0%, #17191f 65%);
+    color: var(--text);
+    font-family: "Noto Serif TC", "Microsoft JhengHei", serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 950px;
+    margin: auto;
+}
+
+/* ===== 頁首 ===== */
+header {
+    text-align: center;
+    padding: 25px 10px 30px;
+    border-bottom: 2px solid var(--gold);
+    margin-bottom: 28px;
+}
+
+.header-icon {
+    font-size: 48px;
+    margin-bottom: 8px;
+}
+
+h1 {
+    color: var(--gold-light);
+    font-size: clamp(25px, 5vw, 38px);
+    letter-spacing: 4px;
+    margin: 5px 0 12px;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.seal {
+    display: inline-block;
+    color: #fff0e0;
+    background: var(--red);
+    padding: 7px 17px;
+    transform: rotate(-5deg);
+    border: 2px solid #d87b75;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-top: 16px;
+}
+
+/* ===== 區塊共用 ===== */
+.section {
+    background: var(--panel);
+    border: 1px solid #514936;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px #0005;
+}
+
+.section-title {
+    color: var(--gold);
+    font-size: 19px;
+    letter-spacing: 2px;
+    border-bottom: 1px solid #5b513d;
+    padding-bottom: 12px;
+    margin: 0 0 18px;
+}
+
+.section-title span {
+    margin-right: 8px;
+}
+
+/* ===== 問題輸入區 ===== */
+textarea {
+    width: 100%;
+    min-height: 110px;
+    resize: vertical;
+    padding: 15px;
+    background: #17191f;
+    color: var(--text);
+    border: 1px solid #6e6147;
+    border-radius: 7px;
+    font-size: 16px;
+    line-height: 1.8;
+    font-family: inherit;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 8px #d6b46a44;
+}
+
+.hint {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 8px 0 18px;
+}
+
+button {
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    letter-spacing: 2px;
+    transition: 0.2s;
+}
+
+.main-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #d8b96f, #a98743);
+    color: #211d15;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+}
+
+.main-btn:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}
+
+.main-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.secondary-btn {
+    padding: 12px 24px;
+    background: transparent;
+    color: var(--gold-light);
+    border: 1px solid var(--gold);
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.secondary-btn:hover {
+    background: #d6b46a22;
+}
+
+/* ===== 委員卡片 ===== */
+.committee-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.member {
+    background: #191c23;
+    border: 1px solid #514936;
+    border-radius: 8px;
+    padding: 19px 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.member-icon {
+    font-size: 38px;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.member h3 {
+    text-align: center;
+    margin: 5px 0;
+    color: var(--gold-light);
+    font-size: 17px;
+}
+
+.member-role {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 16px;
+}
+
+.speech {
+    border-top: 1px solid #514936;
+    padding-top: 13px;
+    font-size: 14px;
+    line-height: 1.9;
+    flex: 1;
+    color: #e3ded2;
+    overflow-wrap: anywhere;
+}
+
+.waiting {
+    color: #888;
+    text-align: center;
+    padding: 15px 0;
+    font-style: italic;
+}
+
+/* ===== 投票區 ===== */
+.vote-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.vote-card {
+    background: #191c23;
+    border: 1px solid #514936;
+    border-radius: 8px;
+    text-align: center;
+    padding: 18px 10px;
+}
+
+.vote-name {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.vote-choice {
+    color: var(--gold-light);
+    font-size: 23px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.vote-summary {
+    margin-top: 20px;
+    padding: 16px;
+    background: #17191f;
+    border-radius: 7px;
+    text-align: center;
+}
+
+.vote-summary p {
+    margin: 7px;
+    color: var(--muted);
+}
+
+.vote-summary strong {
+    color: var(--gold-light);
+    font-size: 20px;
+}
+
+/* ===== 決議區 ===== */
+.resolution {
+    position: relative;
+    text-align: center;
+    padding: 28px 20px;
+    background: linear-gradient(145deg, #3b3027, #242027);
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+}
+
+.resolution h2 {
+    color: var(--gold);
+    font-size: 20px;
+    letter-spacing: 4px;
+    margin: 0 0 15px;
+}
+
+.resolution-result {
+    color: var(--gold-light);
+    font-size: clamp(25px, 5vw, 36px);
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+.resolution-detail {
+    color: #d0c9bb;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.stamp {
+    display: inline-block;
+    border: 3px double #c75a54;
+    color: #d86e68;
+    font-size: 16px;
+    padding: 7px 13px;
+    transform: rotate(-8deg);
+    margin-top: 17px;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+/* ===== 狀態與隱藏 ===== */
+.hidden {
+    display: none;
+}
+
+#error {
+    color: #ff9999;
+    font-size: 14px;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.actions {
+    text-align: center;
+    margin-top: 22px;
+}
+
+footer {
+    text-align: center;
+    color: #777;
+    font-size: 12px;
+    margin-top: 40px;
+    line-height: 2;
+}
+
+@media (max-width: 650px) {
+    body {
+        padding: 15px 12px 40px;
+    }
+
+    .section {
+        padding: 18px 14px;
+    }
+
+    .committee-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .vote-grid {
+        gap: 7px;
+    }
+
+    .vote-card {
+        padding: 14px 5px;
+    }
+
+    .vote-choice {
+        font-size: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+    <!-- 網站標題 -->
+    <header>
+        <div class="header-icon">⚖️</div>
+        <h1>人生重大決策委員會</h1>
+        <div class="subtitle">
+            LIFE DECISION COMMITTEE
+        </div>
+        <div class="seal">正式議事中</div>
+    </header>
+
+    <!-- 問題輸入區 -->
+    <section class="section">
+        <h2 class="section-title">
+            <span>📜</span>主席提案
+        </h2>
+
+        <textarea
+            id="question"
+            placeholder="請主席提出今天面臨的人生難題……&#10;例如：到底要不要主動傳訊息給喜歡的人？"
+        ></textarea>
+
+        <p class="hint">
+            ※ 無論是人生大事還是芝麻小事，本委員會一律嚴肅處理。
+        </p>
+
+        <button class="main-btn" id="startBtn">
+            🔨 召開會議
+        </button>
+
+        <div id="error"></div>
+    </section>
+
+    <!-- 委員發言區 -->
+    <section class="section">
+        <h2 class="section-title">
+            <span>🏛️</span>委員會發言紀錄
+        </h2>
+
+        <div class="committee-grid">
+
+            <div class="member">
+                <div class="member-icon">🧐</div>
+                <h3>理性派委員</h3>
+                <div class="member-role">數據至上・風險管理專家</div>
+                <div class="speech waiting" id="rationalSpeech">
+                    等待主席提出議案……
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-icon">💗</div>
+                <h3>感性派委員</h3>
+                <div class="member-role">心靈導師・情緒觀察家</div>
+                <div class="speech waiting" id="emotionalSpeech">
+                    等待主席提出議案……
+                </div>
+            </div>
+
+            <div class="member">
+                <div class="member-icon">🤡</div>
+                <h3>瘋狂派委員</h3>
+                <div class="member-role">混亂大師・創意破壞者</div>
+                <div class="speech waiting" id="crazySpeech">
+                    等待主席提出議案……
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 投票結果區 -->
+    <section class="section">
+        <h2 class="section-title">
+            <span>🗳️</span>委員投票結果
+        </h2>
+
+        <div class="vote-grid">
+
+            <div class="vote-card">
+                <div class="vote-name">理性派委員</div>
+                <div class="vote-choice" id="rationalVote">尚未投票</div>
+            </div>
+
+            <div class="vote-card">
+                <div class="vote-name">感性派委員</div>
+                <div class="vote-choice" id="emotionalVote">尚未投票</div>
+            </div>
+
+            <div class="vote-card">
+                <div class="vote-name">瘋狂派委員</div>
+                <div class="vote-choice" id="crazyVote">尚未投票</div>
+            </div>
+
+        </div>
+
+        <div class="vote-summary">
+            <p>📊 票數統計</p>
+            <strong id="voteCount">贊成 0 ｜反對 0 ｜棄權 0</strong>
+        </div>
+    </section>
+
+    <!-- 最終決議區 -->
+    <section class="section hidden" id="resolutionSection">
+        <div class="resolution">
+            <h2>⚖️ 委員會最終決議 ⚖️</h2>
+
+            <div class="resolution-result" id="resolutionResult">
+                尚未產生決議
+            </div>
+
+            <div class="resolution-detail" id="resolutionDetail">
+                等待委員會完成表決。
+            </div>
+
+            <div class="stamp">決議通過</div>
+        </div>
+
+        <div class="actions">
+            <button class="secondary-btn" id="againBtn">
+                🔄 重新召開會議
+            </button>
+        </div>
+    </section>
+
+    <footer>
+        人生重大決策委員會 © 2026<br>
+        本委員會的決策僅供娛樂，人生責任仍由主席本人承擔。
+    </footer>
+
+</div>
+
+<script>
+/* =====================================
+   1. 主要設定
+===================================== */
+
+// 三種可投票立場
+const VOTES = ["贊成", "反對", "棄權"];
+
+// 委員發言內容
+// {question} 會自動替換成使用者輸入的問題
+
+const speeches = {
+
+    rational: [
+        "關於「{question}」，本人建議先列出成本與效益。請問這件事的最壞結果是否在您的承受範圍內？若可以承擔，則值得考慮；否則應謹慎評估。",
+        "針對「{question}」，本席認為應採取風險控管策略。先不要急著行動，建議蒐集三項可靠資訊，再做出理性決策。",
+        "經過初步分析，「{question}」涉及時間、金錢與機會成本。請主席問自己：一年後回頭看，哪個選擇比較不容易後悔？",
+        "本席針對「{question}」提出數據派觀點：如果收益大於風險，且不影響基本生活，就可以嘗試。否則，請先冷靜三天。",
+        "根據本席長期觀察，人類最常犯的錯誤就是沒有充分思考。因此對於「{question}」，本人建議先睡一覺，明天再決定。"
+    ],
+
+    emotional: [
+        "聽到主席正在煩惱「{question}」，本席想先給您一個擁抱。您的感受很重要，不需要因為別人的期待而忽略自己真正想要的東西。",
+        "本席認為，「{question}」最重要的不是結果，而是您的心情。如果想到這件事會讓您眼睛發亮，那或許值得給自己一次機會。",
+        "親愛的主席，您已經很努力了。面對「{question}」，請不要太苛責自己。人生不是每一題都有標準答案，偶爾選擇讓自己快樂也很好。",
+        "本席想問主席一個問題：如果完全不必擔心別人的眼光，您會怎麼選擇？關於「{question}」，也許您的內心早就有答案了。",
+        "人生短短幾萬天，請不要把所有時間都花在猶豫。針對「{question}」，本席支持您聽聽自己的心聲。"
+    ],
+
+    crazy: [
+        "本席提議直接召喚一隻鴿子，將「{question}」寫在兩張紙上，讓鴿子叼走其中一張！這就是命運的安排！",
+        "等等！本席想到一個絕妙方法：先對著鏡子跳三分鐘海草舞，再用剪刀石頭布決定「{question}」！",
+        "本人建議成立一支特別行動小組，聘請三隻企鵝、一位魔術師與一台微波爐，共同研究「{question}」的可能性！",
+        "根據本席夢中的神祕啟示，「{question}」的答案藏在冰箱第三層。請主席立刻前往調查！",
+        "本席認為不要想太多！現在立刻戴上最帥的帽子，播放電影配樂，讓自己像主角一樣處理「{question}」！"
+    ]
+};
+
+
+/* =====================================
+   2. 取得 HTML 元素
+===================================== */
+
+const questionInput = document.getElementById("question");
+const startBtn = document.getElementById("startBtn");
+const againBtn = document.getElementById("againBtn");
+const error = document.getElementById("error");
+
+const resolutionSection =
+    document.getElementById("resolutionSection");
+
+
+/* =====================================
+   3. 隨機抽選工具
+===================================== */
+
+// 從陣列中隨機取出一個項目
+function randomItem(array) {
+    const index = Math.floor(Math.random() * array.length);
+    return array[index];
+}
+
+
+/* =====================================
+   4. 產生委員發言
+===================================== */
+
+// 依照不同委員的個性產生建議
+function generateSpeech(type, question) {
+
+    const speech = randomItem(speeches[type]);
+
+    return speech.replaceAll("{question}", question);
+}
+
+
+/* =====================================
+   5. 產生投票
+===================================== */
+
+// 每位委員獨立隨機投票
+function generateVote() {
+    return randomItem(VOTES);
+}
+
+
+/* =====================================
+   6. 更新投票統計
+===================================== */
+
+function updateVoteCount(votes) {
+
+    const counts = {
+        "贊成": 0,
+        "反對": 0,
+        "棄權": 0
+    };
+
+    // 計算三種立場的票數
+    votes.forEach(vote => {
+        counts[vote]++;
+    });
+
+    document.getElementById("voteCount").textContent =
+        `贊成 ${counts["贊成"]} ｜` +
+        `反對 ${counts["反對"]} ｜` +
+        `棄權 ${counts["棄權"]}`;
+
+    return counts;
+}
+
+
+/* =====================================
+   7. 產生最終決議
+===================================== */
+
+function generateResolution(counts) {
+
+    const maxVotes = Math.max(
+        counts["贊成"],
+        counts["反對"],
+        counts["棄權"]
+    );
+
+    // 找出所有最高票的立場
+    const winners = Object.keys(counts).filter(
+        choice => counts[choice] === maxVotes
+    );
+
+    const result = document.getElementById("resolutionResult");
+    const detail = document.getElementById("resolutionDetail");
+    const stamp = document.querySelector(".stamp");
+
+    if (winners.length > 1) {
+
+        // 最高票數相同
+        result.textContent = "意見分歧！";
+
+        detail.textContent =
+            "委員會意見分歧，請主席自行裁決！";
+
+        stamp.textContent = "無法決議";
+
+        stamp.style.borderColor = "#d6b46a";
+        stamp.style.color = "#d6b46a";
+
+    } else {
+
+        const winner = winners[0];
+
+        result.textContent = winner;
+
+        if (winner === "贊成") {
+            detail.textContent =
+                "經全體委員表決，本案獲得最高支持票數。" +
+                "主席可以考慮勇敢邁出第一步！";
+
+            stamp.textContent = "提案通過";
+
+        } else if (winner === "反對") {
+            detail.textContent =
+                "經全體委員表決，本案反對票數最高。" +
+                "建議主席暫緩行動，重新評估相關風險。";
+
+            stamp.textContent = "提案駁回";
+
+        } else {
+            detail.textContent =
+                "本案獲得最高棄權票數。委員會目前無法給出明確方向，" +
+                "請主席自行判斷！";
+
+            stamp.textContent = "暫不表決";
+        }
+
+        stamp.style.borderColor = "#d86e68";
+        stamp.style.color = "#d86e68";
+    }
+}
+
+
+/* =====================================
+   8. 召開會議
+===================================== */
+
+function holdMeeting() {
+
+    // 取得並清除前後空白
+    const question = questionInput.value.trim();
+
+    // 檢查是否有輸入問題
+    if (!question) {
+
+        error.textContent = "主席，請先提出您的問題！";
+
+        questionInput.focus();
+
+        return;
+    }
+
+    error.textContent = "";
+
+    // 產生三位委員的發言
+    const rational = generateSpeech("rational", question);
+    const emotional = generateSpeech("emotional", question);
+    const crazy = generateSpeech("crazy", question);
+
+    // 顯示委員發言
+    document.getElementById("rationalSpeech").textContent =
+        rational;
+
+    document.getElementById("emotionalSpeech").textContent =
+        emotional;
+
+    document.getElementById("crazySpeech").textContent =
+        crazy;
+
+    // 移除等待樣式
+    document.querySelectorAll(".speech").forEach(element => {
+        element.classList.remove("waiting");
+    });
+
+    // 三位委員開始投票
+    const votes = [
+        generateVote(),
+        generateVote(),
+        generateVote()
+    ];
+
+    // 顯示個別投票
+    document.getElementById("rationalVote").textContent =
+        votes[0];
+
+    document.getElementById("emotionalVote").textContent =
+        votes[1];
+
+    document.getElementById("crazyVote").textContent =
+        votes[2];
+
+    // 統計票數
+    const counts = updateVoteCount(votes);
+
+    // 產生最終決議
+    generateResolution(counts);
+
+    // 顯示決議區
+    resolutionSection.classList.remove("hidden");
+
+    // 更新按鈕文字
+    startBtn.textContent = "🔨 再次召開會議";
+
+    // 捲動到決議區
+    resolutionSection.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+}
+
+
+/* =====================================
+   9. 按鈕事件
+===================================== */
+
+// 首次召開會議
+startBtn.addEventListener("click", holdMeeting);
+
+// 重新召開同一個問題的會議
+againBtn.addEventListener("click", holdMeeting);
+
+// 使用者修改問題時，清除錯誤訊息
+questionInput.addEventListener("input", () => {
+    error.textContent = "";
+});
+
+</script>
+</body>
+</html>
